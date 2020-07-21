@@ -1,72 +1,71 @@
 package com.gauravrmsc.ecommerce.model.persistence;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.persistence.*;
 
 
 @Entity
 @Table(name = "user")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty
-	private long id;
-	
-	@Column(nullable = false, unique = true)
-	@JsonProperty
-	private String username;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @JsonProperty
+  private long id;
 
-	public String getPassword() {
-		return password;
-	}
+  @Column(nullable = false, unique = true)
+  @JsonProperty
+  private String username;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  public User() {
+  }
 
-	@Column(nullable = false)
-	private String password;
+  public User(String username, String password) {
+    this.username = username;
+    this.password = password;
+  }
 
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id", referencedColumnName = "id")
-	@JsonIgnore
-    private Cart cart;
-	
-	public Cart getCart() {
-		return cart;
-	}
+  public String getPassword() {
+    return password;
+  }
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
-	}
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-	public long getId() {
-		return id;
-	}
+  @Column(nullable = false)
+  private String password;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "cart_id", referencedColumnName = "id")
+  @JsonIgnore
+  private Cart cart;
 
-	public String getUsername() {
-		return username;
-	}
+  public Cart getCart() {
+    return cart;
+  }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	
-	
-	
+  public void setCart(Cart cart) {
+    this.cart = cart;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+
+
 }

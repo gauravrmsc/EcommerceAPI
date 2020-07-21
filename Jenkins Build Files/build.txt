@@ -1,0 +1,18 @@
+Started by user Gaurav Kumar
+Running as SYSTEM
+Building in workspace /var/lib/jenkins/workspace/Ecommerce Build
+No credentials specified
+ > git rev-parse --is-inside-work-tree # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/gauravrmsc/EcommerceAPI.git # timeout=10
+Fetching upstream changes from https://github.com/gauravrmsc/EcommerceAPI.git
+ > git --version # timeout=10
+ > git fetch --tags --force --progress -- https://github.com/gauravrmsc/EcommerceAPI.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
+Checking out Revision d3c630efe95a77be73e7062a82b998fdf89fc7f4 (refs/remotes/origin/master)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f d3c630efe95a77be73e7062a82b998fdf89fc7f4 # timeout=10
+Commit message: "Merge branch 'master' of github.com:gauravrmsc/EcommerceAPI"
+ > git rev-list --no-walk d3c630efe95a77be73e7062a82b998fdf89fc7f4 # timeout=10
+Finished: SUCCESS

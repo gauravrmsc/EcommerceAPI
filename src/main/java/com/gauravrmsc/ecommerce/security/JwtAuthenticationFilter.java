@@ -50,6 +50,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
               new ArrayList<>())
       );
     } catch (IOException e) {
+      logger.error(e);
       throw new RuntimeException(e);
     }
   }

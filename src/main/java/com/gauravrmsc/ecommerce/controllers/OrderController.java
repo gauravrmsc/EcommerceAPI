@@ -35,6 +35,7 @@ public class OrderController {
 		logger.info("{} placed an order",username);
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
+			logger.info("User Account for {} not found",username);
 			return ResponseEntity.notFound().build();
 		}
 		UserOrder order = UserOrder.createFromCart(user.getCart());
@@ -46,6 +47,7 @@ public class OrderController {
 	public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
+			logger.info("User Account for {} not found",username);
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok(orderRepository.findByUser(user));
