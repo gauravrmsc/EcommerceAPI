@@ -20,21 +20,22 @@ public class AuthenticationService implements AuthenticationProvider {
   UserRepository userRepository;
   @Autowired
   BCryptPasswordEncoder passwordEncoder;
+
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     String userName = authentication.getName();
     String password = authentication.getCredentials().toString();
     User user = userRepository.findByUsername(userName);
-    if (user != null && passwordEncoder.matches(password,user.getPassword())) {
-      logger.info("User {} logged into his account",userName);
+    if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+      logger.info("User {} logged into his account", userName);
       return new UsernamePasswordAuthenticationToken(userName, password, new ArrayList<>());
     }
-    logger.warn("Invaid Login Attempt id={}",userName);
+    logger.warn("Invaid Login Attempt id={}", userName);
     return null;
   }
 
   @Override
   public boolean supports(Class<?> authentication) {
-    return  authentication.equals(UsernamePasswordAuthenticationToken.class) ;
+    return authentication.equals(UsernamePasswordAuthenticationToken.class);
   }
 }
