@@ -1,34 +1,26 @@
 package com.gauravrmsc.ecommerce.security;
 
 import com.auth0.jwt.JWT;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gauravrmsc.ecommerce.model.requests.CreateUserRequest;
 import com.gauravrmsc.ecommerce.model.requests.LoginRequest;
-import javax.servlet.http.Cookie;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.core.userdetails.User;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import org.springframework.stereotype.Service;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static com.gauravrmsc.ecommerce.security.SecurityConstants.*;
 
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
 
   private AuthenticationManager authenticationManager;
 
@@ -37,18 +29,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   }
 
   @Override
-  public Authentication attemptAuthentication(HttpServletRequest req,
-      HttpServletResponse res) throws AuthenticationException {
+  public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
+      throws AuthenticationException {
     try {
-      LoginRequest creds = new ObjectMapper()
-          .readValue(req.getInputStream(), LoginRequest.class);
+      LoginRequest creds = new ObjectMapper().readValue(req.getInputStream(), LoginRequest.class);
 
       return authenticationManager.authenticate(
-          new UsernamePasswordAuthenticationToken(
-              creds.getUsername(),
-              creds.getPassword(),
-              new ArrayList<>())
-      );
+          new UsernamePasswordAuthenticationToken(creds.getUsername(), creds.getPassword(),
+              new ArrayList<>()));
     } catch (IOException e) {
       logger.error(e);
       throw new RuntimeException(e);
@@ -56,13 +44,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   }
 
   @Override
-  protected void successfulAuthentication(HttpServletRequest req,
-      HttpServletResponse res,
-      FilterChain chain,
-      Authentication auth) throws IOException, ServletException {
+  protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res,
+      FilterChain chain, Authentication auth) throws IOException, ServletException {
 
-    String token = JWT.create()
-        .withSubject(auth.getName())
+    String token = JWT.create().withSubject(auth.getName())
         .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
         .sign(HMAC512(SECRET.getBytes()));
     res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);

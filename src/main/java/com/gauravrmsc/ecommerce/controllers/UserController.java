@@ -41,12 +41,21 @@ public class UserController {
 
   @PostMapping("/create")
   public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
+    if (createUserRequest == null || createUserRequest.getUsername() == null
+        || createUserRequest.getPassword() == null
+        || createUserRequest.getConfirmPassword() == null) {
+      log.error("Invalid User Details Provided");
+      ResponseEntity<User> errorResponse =
+          new ResponseEntity("Invalid user details  provided", HttpStatus.BAD_REQUEST);
+      return errorResponse;
+    }
     log.info("Creating User {}", createUserRequest.getUsername());
     if (createUserRequest.getPassword().length() < 7 || !createUserRequest.getPassword()
         .equals(createUserRequest.getConfirmPassword())) {
-      log.info("Create User Request for {} failed", createUserRequest.getUsername());
+      log.error("Create User Request for {} failed", createUserRequest.getUsername());
       ResponseEntity<User> response =
-          new ResponseEntity("Invalid User details", HttpStatus.BAD_REQUEST);
+          new ResponseEntity("User Details does not meet the specified constraints",
+              HttpStatus.BAD_REQUEST);
       return response;
     }
 
